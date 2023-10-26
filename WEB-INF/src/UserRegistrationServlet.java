@@ -47,7 +47,7 @@ public class UserRegistrationServlet extends HttpServlet {
 
         try {
             // Check if password is equal to password confirmation
-            if (password.equalsIgnoreCase(passConfirmation)) {
+            if (password.equals(passConfirmation)) {
 
                 // Create statement to check if username is taken
                 Statement checkIfUsernameIsTaken = null;
