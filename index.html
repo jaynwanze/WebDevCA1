@@ -13,15 +13,22 @@
     <h3>Please Register: </h3>
     <!-- Form to take in user registration details -->
     <form action="regUserDetails" method="GET">
-        <h4>Username: <input type="text" name="username" /></h4>
-        <h4>Password: <input type="password" name="password" id="user_password" /> </h4>
-        <h4>Password Confirmation: <input type="password" name="passwordConfirmation" id="user_password_conf" /> </h4>
-        Password Requirements: (Max 20 Characters)<br>
+        <h4>Username: <input type="text" name="username" required /></h4>
+        <h4>Password: <input type="password" name="password" id="user_password" required /> </h4>
+        <h4>Password Confirmation: <input type="password" name="passwordConfirmation" id="user_password_conf"
+                required /> </h4>
         <!-- A checkbox to toggle between password visibility -->
-        Show Password <input type="checkbox" onclick="passwordToggle()" /><br><br>
+        Show Password:<input type="checkbox" onclick="showPasswordToggle()" /><br><br>
+        <!-- Submit button which stores registration details within form to be accessed by servlet mapping-->
+        <input type="submit" value="Submit" onclick="setPasswordType()" /><br>
+        <br>Password Requirements:<br>
+        - Minimum 8 Characters<br>
+        - Maximum 20 Characters<br>
+
+        <br>
         <!-- Implementation password visibility toggle -->
         <script>
-            function passwordToggle() {
+            function showPasswordToggle() {
                 var pass = document.getElementById("user_password");
                 var passConf = document.getElementById("user_password_conf");
 
@@ -32,18 +39,23 @@
                 } else {
                     pass.type = "password";
                     passConf.type = "password";
-
                 }
-                
             }
 
+            function setPasswordType() {
+                var pass = document.getElementById("user_password");
+                var passConf = document.getElementById("user_password_conf");
+
+                if (pass.type != "password" && passConf.type != "password") {
+                    pass.type = "password";
+                    passConf.type = "password";
+                }
+            }
         </script>
-        <!-- Submit button which stores registration details within form to be accessed by servlet mapping-->
-        <input type="submit" value="Submit" /><br><br>
     </form>
     <!-- Alternative Button to redirect to login page if already registered-->
     If you are already registered go to login page:<br><br><input type="button" value="Login Page"
         onclick="window.location.href='login.html'" />
-</body >
+</body>
 
-</html >
+</html>
