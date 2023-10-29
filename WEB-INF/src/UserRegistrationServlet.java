@@ -49,7 +49,9 @@ public class UserRegistrationServlet extends HttpServlet {
         boolean passwordMatches = false;
 
         // Check if passed in user inputs is blank
-        if (!(username.isBlank()) && !(password.isBlank()) && !(passConfirmation.isBlank())) {
+        if (!(username.isBlank()) && !(username.matches(".*\\s.*")) && !(password.isBlank())
+                && !(password.matches(".*\\s.*")) && !(passConfirmation.isBlank())
+                && !(passConfirmation.matches(".*\\s.*"))) {
             notBlankInput = true;
             // Check if password/password confirmation length is within correct range
             if (password.length() >= 8 && password.length() <= 20 && passConfirmation.length() >= 8
@@ -68,7 +70,7 @@ public class UserRegistrationServlet extends HttpServlet {
                         e1.printStackTrace();
                     }
 
-                    // Executes sql query to check if username already exists
+                    // Executes sql query to check if username already exists 
                     ResultSet rs = null;
                     boolean usernameTaken = false;
                     try {
@@ -141,11 +143,11 @@ public class UserRegistrationServlet extends HttpServlet {
             }
 
         }
-        // If user input field/fields were blank - send reponse/redirect back to
+        // If user input field/fields were blank or have whitespaces - send reponse/redirect back to
         // registration page
         if (notBlankInput == false) {
             out.println("<html><head><title>LoyaltyAppWebsite </title></head>"
-                    + "<body> <h1>Blank Input Field/Fields  - Please Try Register Again!</h1><h3>Now Redirecting You Back To The Registration Page - Please Wait a Few Seconds or Press Button To Return To The Registration Page...<br>"
+                    + "<body> <h1>Whitespaces/Blank Input Field or Fields Not Permitted - Please Try Register Again!</h1><h3>Now Redirecting You Back To The Registration Page - Please Wait a Few Seconds or Press Button To Return To The Registration Page...<br>"
                     + "<br><input type='button' value='Registration Page' onclick=\"window.location.href='index.html'\"/></h3> <script>setTimeout(function () {window.location.href = 'index.html';}, 8000);</script></body></html>");
 
         }
