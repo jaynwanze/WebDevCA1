@@ -13,13 +13,18 @@
     <h3>Please Login: </h3>
     <!-- Form to take in user login details -->
     <form action="loginUserDetails" method="GET">
-        <h4>Username: <input type="text" name="username" /></h4>
-        <h4>Password: <input type="password" name="password" id="user_password" /> (Max 20 Characters)</h4>
+        <h4>Username: <input type="text" name="username" required/></h4>
+        <h4>Password: <input type="password" name="password" id="user_password" required/></h4>
         <!-- A checkbox to toggle between password visibility -->
-        Show Password <input type="checkbox" onclick="passwordToggle()" /><br><br>
+        Show Password <input type="checkbox" onclick="showPasswordToggle()" /><br>
+        <br>Password Requirements:<br>
+        - Minimum 8 Characters<br>
+        - Max 20 Characters<br><br>
+        <!-- Submit button which stores user login details within form to be accessed by servlet mapping-->
+        <input type="submit" value="Submit" onclick="setPasswordType()" />
         <!-- Implementation password visibility toggle -->
         <script>
-            function passwordToggle() {
+            function showPasswordToggle() {
                 var pass = document.getElementById("user_password");
                 if (pass.type === "password") {
                     pass.type = "text";
@@ -27,10 +32,14 @@
                     pass.type = "password";
                 }
             }
+
+            function setPasswordType() {
+                var pass = document.getElementById("user_password");
+                if (pass.type != "password") {
+                    pass.type = "password";
+                }
+            }
         </script>
-        <!-- Submit button which stores user login details within form to be accessed by servlet mapping-->
-        <input type="submit" value="Submit" />
-        
     </form>
 </body>
 
