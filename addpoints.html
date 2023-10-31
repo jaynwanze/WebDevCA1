@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Website title -->
+    <title>Welcome to the LoyaltyPointsApp Website!</title>
+</head>
+<!-- Website Heading -->
+<h1>Welcome to the LoyaltyPointsApp Add Points Page!</h1>
+
+<body>
+    <!-- Website body for add points page -->
+    <h3>Please Enter Reciept Number And Amount of Points You Would Like To Add To Your Loyalty Points Balance: </h3>
+    <!-- Form to take in details for adding points -->
+    <form action="addPointsDetails" method="GET">
+        <h4>Receipt Number: <input type="text" name="receipt_number" required /></h4>
+        <h4>Amount of Points: <input type="text" name="points_to_add" required /></h4>
+        <b>Input Requirements:</b><br>
+        - Reciept Number Format: 4 Numbers<br><br>
+        <!-- Submit button which stores details for adding points within form to be accessed by servlet mapping-->
+            <input type="submit" value="Submit" />
+    </form>
+</body>
+
+</html>

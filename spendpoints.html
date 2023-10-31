@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Website title -->
+    <title>Welcome to the LoyaltyPointsApp Website!</title>
+</head>
+<!-- Website Heading -->
+<h1>Welcome to the LoyaltyPointsApp Spend Points Page!</h1>
+
+<body>
+    <!-- Website body for spend points page -->
+    <h3>Please Enter Amount of Points You Would Like To Spend From Your Loyalty Points Balance: </h3>
+    <!-- Form to take in details for spending points -->
+    <form action="spendPointsDetails" method="GET">
+        <h4>Amount of Points: <input type="text" name="points_to_spend" required /></h4>
+        <!-- Submit button which stores details for spending points within form to be accessed by servlet mapping-->
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+
+</html>
