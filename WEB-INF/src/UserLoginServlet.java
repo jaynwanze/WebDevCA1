@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class UserLoginServlet extends HttpServlet {
 
@@ -75,14 +76,14 @@ public class UserLoginServlet extends HttpServlet {
                 try {
                     // Checks if resultset is returned
                     if (rs.next()) {
-                        // Get password within database as string
-                        String usernameDB = rs.getString(1);
-                        // Check if password matches password within database
+                        String usernameDB = rs.getString(1);// Get username within database as string
+                        // Check if username exists within database
                         if (usernameDB != null && username.equals(usernameDB)) {
-                            usernameExists = true;// set boolean to true if username exists
-                            String passwordDB = rs.getString(2);
+                            usernameExists = true; // set boolean to true if username exists
+                            String passwordDB = rs.getString(2);// Gets password within database as string
+                            // If password matches the password within database
                             if (passwordDB != null && password.equals(passwordDB)) {
-                                passwordMatches = true;// set boolean to true if password matches
+                                passwordMatches = true; // set boolean to true if password matches
                             }
                         }
                     }
@@ -96,6 +97,9 @@ public class UserLoginServlet extends HttpServlet {
                                     + "<body> <h1> Welcome: " + username
                                     + "<br>You have Been Succesfully Logged in!</h1><h3>Now Redirecting You To The LoyaltyPointsApp Homepage - Please Wait a Few Seconds or Press Button To Go To The LoyaltyPointsApp Homepage...<br>"
                                     + "<br><input type='button' value='Homepage' onclick=\"window.location.href='loyaltypoints.html'\"/></h3> <script>setTimeout(function () {window.location.href = 'loyaltypoints.html';}, 8000);</script></body></html>");
+                                    // Setting username as an attritube that be requested by LoyaltyPointsServlet
+                                    HttpSession session = request.getSession();
+                                    session.setAttribute("username", username);
                         }
                         // If password does not match/login was not sucessful - send reponse/redirect
                         // back to login page
@@ -114,7 +118,8 @@ public class UserLoginServlet extends HttpServlet {
             }
         }
 
-        // If user input field/fields were blank or have whitespaces - send reponse/redirect back to
+        // If user input field/fields were blank or have whitespaces - send
+        // reponse/redirect back to
         // login page
         if (notBlankInput == false)
 
