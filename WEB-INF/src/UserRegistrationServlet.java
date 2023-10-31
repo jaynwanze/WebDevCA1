@@ -115,7 +115,7 @@ public class UserRegistrationServlet extends HttpServlet {
                             if (rowsUpdated > 0) {
                                 out.println("<html><head><title>LoyaltyAppWebsite </title></head>"
                                         + "<body> <h1> Welcome: " + username
-                                        + "<br>You have Been Succesfully Created as a User!</h1><h3>Now Redirecting You To The Login Page - Please Wait a Few Seconds or Press Button To Go To The Login Page...<br>"
+                                        + "<br>You have Been Succesfully Created as a New User With a Starting Balance of 100 Loyalty Points!</h1><h3>Now Redirecting You To The Login Page - Please Wait a Few Seconds or Press Button To Go To The Login Page...<br>"
                                         + "<br><input type='button' value='Login Page' onclick=\"window.location.href='login.html'\"/></h3> <script>setTimeout(function () {window.location.href = 'login.html';}, 8000);</script></body></html>");
 
                             } else {
