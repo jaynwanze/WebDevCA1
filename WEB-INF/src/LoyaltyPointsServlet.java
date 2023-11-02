@@ -2,9 +2,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +19,7 @@ public class LoyaltyPointsServlet extends HttpServlet {
 
         // Get username from UserLoginServlet
         HttpSession session = request.getSession();
-        Object username = session.getAttribute("username");
+        String username = (String) session.getAttribute("username");
         String action = null;
         // Gets users input from https request and initialize to variables
         if (request.getParameter("showBalance") != null) {
@@ -66,22 +66,16 @@ public class LoyaltyPointsServlet extends HttpServlet {
         boolean spendPoints = false;
 
         if (action != null) {
-            // Create statement to access passed in user details
-            Statement acessUserDetails = null;
-            try {
-                acessUserDetails = connection.createStatement();
-
-            } catch (SQLException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-            // Execute sql query to access passed in user details and store within a result
-            // set
+            PreparedStatement accessUserDetails = null;
             ResultSet rs = null;
             try {
-                // Executes sql query to access passed in user details
-                rs = acessUserDetails
-                        .executeQuery("SELECT * FROM users WHERE username = '" + username + "'");
+                // Prepare statement to access passed in user details
+                accessUserDetails = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+                accessUserDetails.setString(1, username);
+                // Executes sql query to access passed in user details and store within a
+                // resultset
+                rs = accessUserDetails
+                        .executeQuery();
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -150,11 +144,22 @@ public class LoyaltyPointsServlet extends HttpServlet {
                             + "<script>setTimeout(function () {window.location.href = 'loyaltypoints.html';}, 8000);</script></body></html>");
 
                 }
+                // Close statement/rs
+                rs.close();
+                accessUserDetails.close();
 
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
+
+        } else {
+            // print error accessing your request
+            out.println("<html><head><title>LoyaltyAppWebsite </title></head>"
+                    + "<body> <h1> Error!!! - We Could Not Process Your Action Request, Sorry For Any Inconvience..."
+                    + "</h1><h3>Press Button To Go Back To The LoyaltyPointsApp Homepage...<br>"
+                    + "<br><input type='button' value='Homepage' onclick=\"window.location.href='loyaltypoints.html'\"/></h3>"
+                    + "<script>setTimeout(function () {window.location.href = 'loyaltypoints.html';}, 8000);</script></body></html>");
 
         }
 

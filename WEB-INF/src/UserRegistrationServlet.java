@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -60,22 +59,18 @@ public class UserRegistrationServlet extends HttpServlet {
                 // Check if password is equal to password confirmation
                 if (password.equals(passConfirmation)) {
                     passwordMatches = true;
-                    // Create statement to check if username is taken
-                    Statement checkIfUsernameIsTaken = null;
-                    try {
-                        checkIfUsernameIsTaken = connection.createStatement();
 
-                    } catch (SQLException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-
-                    // Executes sql query to check if username already exists 
+                    PreparedStatement checkIfUsernameIsTaken = null;
                     ResultSet rs = null;
                     boolean usernameTaken = false;
                     try {
+                        // Prepare statement to check if username is taken
+                        checkIfUsernameIsTaken = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+                        checkIfUsernameIsTaken.setString(1, username);
+                        // Executes sql query to check if username already exists/stores within
+                        // resultset
                         rs = checkIfUsernameIsTaken
-                                .executeQuery("SELECT username FROM users WHERE username = '" + username + "'");
+                                .executeQuery();
                     } catch (SQLException e1) {
                         // TODO: handle exception
                         e1.printStackTrace();
@@ -90,6 +85,9 @@ public class UserRegistrationServlet extends HttpServlet {
                                 usernameTaken = true;
                             }
                         }
+                        // close statement/resultset
+                        rs.close();
+                        checkIfUsernameIsTaken.close();
 
                     } catch (SQLException e1) {
                         // TODO Auto-generated catch block
@@ -143,7 +141,8 @@ public class UserRegistrationServlet extends HttpServlet {
             }
 
         }
-        // If user input field/fields were blank or have whitespaces - send reponse/redirect back to
+        // If user input field/fields were blank or have whitespaces - send
+        // reponse/redirect back to
         // registration page
         if (notBlankInput == false) {
             out.println("<html><head><title>LoyaltyAppWebsite </title></head>"
@@ -166,7 +165,6 @@ public class UserRegistrationServlet extends HttpServlet {
                     + "<body> <h1> Your Password and Password Confirmation Don't Match - Please Try Register Again!</h1><h3>Now Redirecting You Back To The Registration Page - Please Wait a Few Seconds or Press Button To Return To The Registration Page...<br>"
                     + "<br><input type='button' value='Registration Page' onclick=\"window.location.href='index.html'\"/></h3> <script>setTimeout(function () {window.location.href = 'index.html';}, 8000);</script></body></html>");
         }
-
     }
 
 }

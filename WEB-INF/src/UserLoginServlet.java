@@ -2,9 +2,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -54,21 +54,17 @@ public class UserLoginServlet extends HttpServlet {
             // Check if password length is within range
             if (password.length() >= 8 && password.length() <= 20) {
                 passwordCorrectLength = true;
-                // Create statement to check if username exists/password matches in database
-                Statement checkUserLoginDetails = null;
-                try {
-                    checkUserLoginDetails = connection.createStatement();
 
-                } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                // Execute sql query to check if username exists/password matches in database
+                PreparedStatement checkUserLoginDetails = null;
                 ResultSet rs = null;
                 try {
-                    // Executes sql query to check if username already exists/password matches
+                    // Prepared statement to check to if user exists
+                    checkUserLoginDetails = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+                    checkUserLoginDetails.setString(1, username);
+                    // Executes sql query tocheck if username already exists /stores resutls within
+                    // rs
                     rs = checkUserLoginDetails
-                            .executeQuery("SELECT * FROM users WHERE username = '" + username + "'");
+                            .executeQuery();
                 } catch (SQLException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -86,6 +82,9 @@ public class UserLoginServlet extends HttpServlet {
                                 passwordMatches = true; // set boolean to true if password matches
                             }
                         }
+                        // Close statement / resultset
+                        rs.close();
+                        checkUserLoginDetails.close();
                     }
                     // If username exists within database
                     if (usernameExists == true) {
@@ -97,9 +96,9 @@ public class UserLoginServlet extends HttpServlet {
                                     + "<body> <h1> Welcome: " + username
                                     + "<br>You have Been Succesfully Logged in!</h1><h3>Now Redirecting You To The LoyaltyPointsApp Homepage - Please Wait a Few Seconds or Press Button To Go To The LoyaltyPointsApp Homepage...<br>"
                                     + "<br><input type='button' value='Homepage' onclick=\"window.location.href='loyaltypoints.html'\"/></h3> <script>setTimeout(function () {window.location.href = 'loyaltypoints.html';}, 8000);</script></body></html>");
-                                    // Setting username as an attritube that be requested by LoyaltyPointsServlet
-                                    HttpSession session = request.getSession();
-                                    session.setAttribute("username", username);
+                            // Setting username as an attritube that be requested by LoyaltyPointsServlet
+                            HttpSession session = request.getSession();
+                            session.setAttribute("username", username);
                         }
                         // If password does not match/login was not sucessful - send reponse/redirect
                         // back to login page
