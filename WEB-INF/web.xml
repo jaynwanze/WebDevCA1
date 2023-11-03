@@ -36,7 +36,29 @@
 	<!-- Loyalty Points Servlet Mapping -->
 	<servlet-mapping>
 		<servlet-name>LoyaltyPoints</servlet-name>
-		<url-pattern>/loyaltyPointsDetails</url-pattern>
+		<url-pattern>/loyaltyPointsAction</url-pattern>
+	</servlet-mapping>
+
+	<!-- Add Points Action Servlet -->
+	<servlet>
+		<servlet-name>AddPointsAction</servlet-name>
+		<servlet-class>AddPointsActionServlet</servlet-class>
+	</servlet>
+	<!-- Add Points Action Mapping -->
+	<servlet-mapping>
+		<servlet-name>AddPointsAction</servlet-name>
+		<url-pattern>/addPointsDetails</url-pattern>
+	</servlet-mapping>
+
+	<!-- Spend Points Action Servlet -->
+	<servlet>
+		<servlet-name>SpendPointsAction</servlet-name>
+		<servlet-class>SpendPointsActionServlet</servlet-class>
+	</servlet>
+	<!-- Spend Points Action Mapping -->
+	<servlet-mapping>
+		<servlet-name>SpendPointsAction</servlet-name>
+		<url-pattern>/spendPointsDetails</url-pattern>
 	</servlet-mapping>
 
 
